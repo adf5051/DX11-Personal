@@ -134,6 +134,12 @@ bool MyDemoGame::Init()
 	// geometric primitives we'll be using and how to interpret them
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+	sun = {
+		XMFLOAT4(0.1f,0.1f,0.1f,1.0f),
+		XMFLOAT4(1,1,0,1),
+		XMFLOAT3(1,1,0)
+	};
+
 	// Successfully initialized
 	return true;
 }
@@ -337,6 +343,7 @@ void MyDemoGame::DrawScene(float deltaTime, float totalTime)
 
 	for (int i = 0; i < 3; i++)
 	{
+		entities[i]->SetDirectionalLight(&sun);
 		entities[i]->Draw(deviceContext, debugCamera->ViewMat(), debugCamera->ProjectionMat());
 	}
 

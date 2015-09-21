@@ -7,6 +7,7 @@
 #include "GameEntity.h"
 #include "Camera.h"
 #include "InputManager.h"
+#include "Light.h"
 
 // Include run-time memory checking in debug builds, so 
 // we can be notified of memory leaks
@@ -67,4 +68,6 @@ private:
 	std::vector<Material*> materials;
 
 	Camera* debugCamera;
+
+	DirectionalLight sun;
 };

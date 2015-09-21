@@ -8,7 +8,9 @@ struct DirectionalLight
 
 cbuffer externalData : register(b0)
 {
+	float4 surfaceColor;
 	DirectionalLight light;
+	DirectionalLight exLight;
 }
 
 // Struct representing the data we expect to receive from earlier pipeline stages
@@ -27,6 +29,21 @@ struct VertexToPixel
 	float3 normal		: NORMAL;
 };
 
+float3 directionalLightCalculation(DirectionalLight dl, float3 normal)
+{
+	float3 dirToLight = -dl.Direction;
+	dirToLight = normalize(dirToLight);
+
+	float3 lightAmount = dot(normal, dirToLight);
+
+	lightAmount = saturate(lightAmount);
+
+	float3 color = dl.DiffuseColor * lightAmount;
+	color = color + dl.AmbientColor;
+
+	return color;
+}
+
 // --------------------------------------------------------
 // The entry point (main method) for our pixel shader
 // 
@@ -38,15 +55,12 @@ struct VertexToPixel
 // --------------------------------------------------------
 float4 main(VertexToPixel input) : SV_TARGET
 {
-	float3 dirToLight = -light.Direction;
-	dirToLight = normalize(dirToLight);
 
-	float3 lightAmount = dot(input.normal, dirToLight);
+	float3 color = directionalLightCalculation(light,input.normal);
 
-	lightAmount = saturate(lightAmount);
-	
-	float3 color = light.DiffuseColor * lightAmount;
-	color = color + light.AmbientColor;
+	color += directionalLightCalculation(exLight, input.normal);
+
+	color = surfaceColor * color;
 
 	// Just return the input color
 	// - This color (like most values passing through the rasterizer) is 

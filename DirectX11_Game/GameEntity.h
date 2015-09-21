@@ -41,6 +41,8 @@ public:
 	void Draw(ID3D11DeviceContext *deviceContext, XMFLOAT4X4 view, XMFLOAT4X4 proj);
 
 	void SetDirectionalLight(DirectionalLight *light);
+
+	void SetSunLight(DirectionalLight *light);
 	
 private:
 
@@ -57,6 +59,8 @@ private:
 	Material* material;
 
 	DirectionalLight *sun;
+	DirectionalLight *dirLight;
+
 
 	bool dirty;
 };

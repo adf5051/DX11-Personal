@@ -137,7 +137,13 @@ bool MyDemoGame::Init()
 	sun = {
 		XMFLOAT4(0.1f,0.1f,0.1f,1.0f),
 		XMFLOAT4(1,1,0,1),
-		XMFLOAT3(1,1,0)
+		XMFLOAT3(1,-1,0)
+	};
+
+	extra = {
+		XMFLOAT4(0.1f,0.1f,0.1f,1.0f),
+		XMFLOAT4(0,0,1,1),
+		XMFLOAT3(1,-1,0)
 	};
 
 	// Successfully initialized
@@ -308,6 +314,8 @@ void MyDemoGame::UpdateScene(float deltaTime, float totalTime)
 	float sine = sin(totalTime);
 	float tang = tan(totalTime);
 
+	extra.Direction = { 1,cosine,0 };
+
 	XMVECTOR velocity = { .2f,.2f,.1f };
 	velocity *= deltaTime;
 	//entities[0]->Move(velocity);
@@ -343,7 +351,8 @@ void MyDemoGame::DrawScene(float deltaTime, float totalTime)
 
 	for (int i = 0; i < 3; i++)
 	{
-		entities[i]->SetDirectionalLight(&sun);
+		entities[i]->SetSunLight(&sun);
+		entities[i]->SetDirectionalLight(&extra);
 		entities[i]->Draw(deviceContext, debugCamera->ViewMat(), debugCamera->ProjectionMat());
 	}
 

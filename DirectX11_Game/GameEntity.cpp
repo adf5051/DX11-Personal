@@ -156,6 +156,11 @@ void GameEntity::Draw(ID3D11DeviceContext *deviceContext, XMFLOAT4X4 view, XMFLO
 
 void GameEntity::SetDirectionalLight(DirectionalLight *light)
 {
+	dirLight = light;
+}
+
+void GameEntity::SetSunLight(DirectionalLight *light)
+{
 	sun = light;
 }
 
@@ -166,6 +171,14 @@ void GameEntity::PrepareMaterial(XMFLOAT4X4 view, XMFLOAT4X4 projection)
 		sun,
 		sizeof(DirectionalLight)
 	);
+
+	material->GetPixelShader()->SetData(
+		"exLight",
+		dirLight,
+		sizeof(DirectionalLight)
+		);
+
+	material->GetPixelShader()->SetFloat4("surfaceColor", { .5f,.5f,.8f,1 });
 
 	material->GetVertexShader()->SetMatrix4x4("world", world);
 	material->GetVertexShader()->SetMatrix4x4("view", view);

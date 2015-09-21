@@ -70,4 +70,5 @@ private:
 	Camera* debugCamera;
 
 	DirectionalLight sun;
+	DirectionalLight extra;
 };

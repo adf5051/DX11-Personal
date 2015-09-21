@@ -27,9 +27,6 @@
 // For the DirectX Math library
 using namespace DirectX;
 
-// toggle this true to see my modifications false to see the original
-#define MyCode true;
-
 #pragma region Win32 Entry Point (WinMain)
 // --------------------------------------------------------
 // Win32 Entry Point - Where your program starts
@@ -85,7 +82,6 @@ MyDemoGame::MyDemoGame(HINSTANCE hInstance)
 // --------------------------------------------------------
 MyDemoGame::~MyDemoGame()
 {
-#if MyCode
 	for (int i = 0; i < entities.size(); i++) {
 		delete entities[i];
 	}
@@ -104,13 +100,6 @@ MyDemoGame::~MyDemoGame()
 	materials.clear();
 
 	delete debugCamera;
-
-#else
-	// Release any D3D stuff that's still hanging out
-	ReleaseMacro(vertexBuffer);
-	ReleaseMacro(indexBuffer);
-
-#endif
 
 	// Delete our simple shaders
 	delete vertexShader;
@@ -176,7 +165,6 @@ void MyDemoGame::CreateGeometry()
 	// - But just to see how it's done...
 	int indices[] = { 0, 1, 2 };
 
-#if MyCode
 	Material* mat = new Material(pixelShader, vertexShader);
 	Mesh *meshOne = new Mesh(vertices, 3, indices, 3, device);
 	GameEntity *objOne = new GameEntity(meshOne, mat);
@@ -216,50 +204,6 @@ void MyDemoGame::CreateGeometry()
 	objThree->Move(XMVECTOR{ 0,0,-1 });
 	entities.push_back(objThree);
 	meshes.push_back(meshThree);
-
-#else
-	// Create the VERTEX BUFFER description -----------------------------------
-	// - The description is created on the stack because we only need
-	//    it to create the buffer.  The description is then useless.
-	D3D11_BUFFER_DESC vbd;
-	vbd.Usage = D3D11_USAGE_IMMUTABLE;
-	vbd.ByteWidth = sizeof(Vertex) * 3;       // 3 = number of vertices in the buffer
-	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER; // Tells DirectX this is a vertex buffer
-	vbd.CPUAccessFlags = 0;
-	vbd.MiscFlags = 0;
-	vbd.StructureByteStride = 0;
-
-	// Create the proper struct to hold the initial vertex data
-	// - This is how we put the initial data into the buffer
-	D3D11_SUBRESOURCE_DATA initialVertexData;
-	initialVertexData.pSysMem = vertices;
-
-	// Actually create the buffer with the initial data
-	// - Once we do this, we'll NEVER CHANGE THE BUFFER AGAIN
-	HR(device->CreateBuffer(&vbd, &initialVertexData, &vertexBuffer));
-
-
-
-	// Create the INDEX BUFFER description ------------------------------------
-	// - The description is created on the stack because we only need
-	//    it to create the buffer.  The description is then useless.
-	D3D11_BUFFER_DESC ibd;
-	ibd.Usage = D3D11_USAGE_IMMUTABLE;
-	ibd.ByteWidth = sizeof(int) * 3;         // 3 = number of indices in the buffer
-	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER; // Tells DirectX this is an index buffer
-	ibd.CPUAccessFlags = 0;
-	ibd.MiscFlags = 0;
-	ibd.StructureByteStride = 0;
-
-	// Create the proper struct to hold the initial index data
-	// - This is how we put the initial data into the buffer
-	D3D11_SUBRESOURCE_DATA initialIndexData;
-	initialIndexData.pSysMem = indices;
-
-	// Actually create the buffer with the initial data
-	// - Once we do this, we'll NEVER CHANGE THE BUFFER AGAIN
-	HR(device->CreateBuffer(&ibd, &initialIndexData, &indexBuffer));
-#endif
 }
 
 // --------------------------------------------------------
@@ -391,56 +335,9 @@ void MyDemoGame::DrawScene(float deltaTime, float totalTime)
 		1.0f,
 		0);
 
-#if MyCode
-
-	//vertexShader->SetMatrix4x4("view", debugCamera->ViewMat());
-	//vertexShader->SetMatrix4x4("projection", debugCamera->ProjectionMat());
-
 	for (int i = 0; i < 3; i++) {
-		//vertexShader->SetMatrix4x4("world", entities[i]->WorldMat());
-		//vertexShader->SetShader(true);
-		//pixelShader->SetShader(true);
 		entities[i]->Draw(deviceContext, debugCamera->ViewMat(), debugCamera->ProjectionMat());
 	}
-
-
-
-#else
-	// Send data to shader variables
-	//  - Do this ONCE PER OBJECT you're drawing
-	//  - This is actually a complex process of copying data to a local buffer
-	//    and then copying that entire buffer to the GPU.  
-	//  - The "SimpleShader" class handles all of that for you.
-	vertexShader->SetMatrix4x4("world", worldMatrix);
-	vertexShader->SetMatrix4x4("view", viewMatrix);
-	vertexShader->SetMatrix4x4("projection", projectionMatrix);
-
-	// Set the vertex and pixel shaders to use for the next Draw() command
-	//  - These don't technically need to be set every frame...YET
-	//  - Once you start applying different shaders to different objects,
-	//    you'll need to swap the current shaders before each draw
-	vertexShader->SetShader(true);
-	pixelShader->SetShader(true);
-
-	// Set buffers in the input assembler
-	//  - Do this ONCE PER OBJECT you're drawing, since each object might
-	//    have different geometry.
-	UINT stride = sizeof(Vertex);
-	UINT offset = 0;
-
-	deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
-	deviceContext->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
-
-	// Finally do the actual drawing
-	//  - Do this ONCE PER OBJECT you intend to draw
-	//  - This will use all of the currently set DirectX "stuff" (shaders, buffers, etc)
-	//  - DrawIndexed() uses the currently set INDEX BUFFER to look up corresponding
-	//     vertices in the currently set VERTEX BUFFER
-	deviceContext->DrawIndexed(
-		3,     // The number of indices to use (we could draw a subset if we wanted)
-		0,     // Offset to the first index we want to use
-		0);    // Offset to add to each index when looking up vertices
-#endif
 
 	// Present the buffer
 	//  - Puts the image we're drawing into the window so the user can see it

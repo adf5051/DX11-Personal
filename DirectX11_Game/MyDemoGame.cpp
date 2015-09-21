@@ -143,6 +143,12 @@ bool MyDemoGame::Init()
 // --------------------------------------------------------
 void MyDemoGame::CreateGeometry()
 {
+	Material *mat = new Material(pixelShader, vertexShader);
+	Mesh *loadMesh = new Mesh("OBJ/helix.obj", device);
+	GameEntity *loadedObj = new GameEntity(loadMesh, mat);
+	entities.push_back(loadedObj);
+	materials.push_back(mat);
+	meshes.push_back(loadMesh);
 
 	// Set up the vertices of the triangle we would like to draw
 	// - We're going to copy this array, exactly as it exists in memory
@@ -161,11 +167,9 @@ void MyDemoGame::CreateGeometry()
 	// - But just to see how it's done...
 	int indices[] = { 0, 1, 2 };
 
-	Material* mat = new Material(pixelShader, vertexShader);
 	Mesh *meshOne = new Mesh(vertices, 3, indices, 3, device);
 	GameEntity *objOne = new GameEntity(meshOne, mat);
 	entities.push_back(objOne);
-	materials.push_back(mat);
 	meshes.push_back(meshOne);
 
 	Vertex vertices_two[] =

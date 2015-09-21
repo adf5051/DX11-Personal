@@ -11,7 +11,7 @@
 *.userprefs
 
 # Build results
-[Dd]ebug/
+DirectX11_Game/Debug/
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
@@ -43,7 +43,6 @@ dlldata.c
 *_i.h
 *.ilk
 *.meta
-*.obj
 *.pch
 *.pdb
 *.pgc

@@ -156,7 +156,7 @@ bool MyDemoGame::Init()
 void MyDemoGame::CreateGeometry()
 {
 	Material *mat = new Material(pixelShader, vertexShader);
-	Mesh *loadMesh = new Mesh("OBJ/helix.obj", device);
+	Mesh *loadMesh = new Mesh("Models/helix.obj", device);
 	GameEntity *loadedObj = new GameEntity(loadMesh, mat);
 	entities.push_back(loadedObj);
 	materials.push_back(mat);

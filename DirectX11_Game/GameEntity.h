@@ -4,6 +4,7 @@
 #include "Mesh.h"
 #include "SimpleShader.h"
 #include "Material.h"
+#include "Light.h"
 
 using namespace DirectX;
 
@@ -38,6 +39,8 @@ public:
 	void Move(XMVECTOR vel);
 
 	void Draw(ID3D11DeviceContext *deviceContext, XMFLOAT4X4 view, XMFLOAT4X4 proj);
+
+	void SetDirectionalLight(DirectionalLight *light);
 	
 private:
 
@@ -52,6 +55,8 @@ private:
 	Mesh* mesh;
 
 	Material* material;
+
+	DirectionalLight *sun;
 
 	bool dirty;
 };

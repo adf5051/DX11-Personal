@@ -72,7 +72,7 @@ MyDemoGame::MyDemoGame(HINSTANCE hInstance)
 	windowWidth = 800;
 	windowHeight = 600;
 
-	debugCamera = new Camera(aspectRatio,{ 0,0,-5 }, { 0,0 }, true);
+	debugCamera = new Camera(aspectRatio, { 0,0,-5 }, { 0,0 }, true);
 }
 
 // --------------------------------------------------------
@@ -82,7 +82,8 @@ MyDemoGame::MyDemoGame(HINSTANCE hInstance)
 // --------------------------------------------------------
 MyDemoGame::~MyDemoGame()
 {
-	for (int i = 0; i < entities.size(); i++) {
+	for (int i = 0; i < entities.size(); i++)
+	{
 		delete entities[i];
 	}
 	entities.clear();
@@ -148,9 +149,9 @@ void MyDemoGame::CreateGeometry()
 	//    over to a DirectX-controlled data structure (the vertex buffer)
 	Vertex vertices[] =
 	{
-		{ XMFLOAT3(+0.0f, +1.0f, +0.0f), red },
-		{ XMFLOAT3(+1.5f, -1.0f, +0.0f), blue },
-		{ XMFLOAT3(-1.5f, -1.0f, +0.0f), green },
+		{ XMFLOAT3(+0.0f, +1.0f, +0.0f), XMFLOAT3(+0.0f, +0.0f, -1.0f), XMFLOAT2(0,0) },
+		{ XMFLOAT3(+1.5f, -1.0f, +0.0f), XMFLOAT3(+0.0f, +0.0f, -1.0f), XMFLOAT2(0,0) },
+		{ XMFLOAT3(-1.5f, -1.0f, +0.0f), XMFLOAT3(+0.0f, +0.0f, -1.0f), XMFLOAT2(0,0) },
 	};
 
 	// Set up the indices, which tell us which vertices to use and in which order
@@ -169,10 +170,10 @@ void MyDemoGame::CreateGeometry()
 
 	Vertex vertices_two[] =
 	{
-		{ XMFLOAT3(+2.0f, +1.0f, +0.0f), blue },
-		{ XMFLOAT3(+2.0f, -1.0f, +0.0f), blue },
-		{ XMFLOAT3(+1.0f, -1.0f, +0.0f), blue },
-		{ XMFLOAT3(+1.0f, +1.0f, +0.0f), blue },
+		{ XMFLOAT3(+2.0f, +1.0f, +0.0f), XMFLOAT3(+0.0f, +0.0f, -1.0f), XMFLOAT2(0,0) },
+		{ XMFLOAT3(+2.0f, -1.0f, +0.0f), XMFLOAT3(+0.0f, +0.0f, -1.0f), XMFLOAT2(0,0) },
+		{ XMFLOAT3(+1.0f, -1.0f, +0.0f), XMFLOAT3(+0.0f, +0.0f, -1.0f), XMFLOAT2(0,0) },
+		{ XMFLOAT3(+1.0f, +1.0f, +0.0f), XMFLOAT3(+0.0f, +0.0f, -1.0f), XMFLOAT2(0,0) },
 	};
 
 	int indices_two[] = { 0, 1, 2, 0, 2, 3 };
@@ -184,12 +185,12 @@ void MyDemoGame::CreateGeometry()
 
 	Vertex vertices_three[] =
 	{
-		{ XMFLOAT3(-3.0f, -1.0f, +0.0f), green },
-		{ XMFLOAT3(-1.0f,  0.5f, +0.0f), green },
-		{ XMFLOAT3(-2.0f, -1.0f, +0.0f), green },
-		{ XMFLOAT3(+1.0f, -1.0f, +0.0f), green },
-		{ XMFLOAT3(+0.0f, -1.0f, +0.0f), green },
-		{ XMFLOAT3(-1.0f, +2.0f, +0.0f), green },
+		{ XMFLOAT3(-3.0f, -1.0f, +0.0f), XMFLOAT3(+0.0f, +0.0f, -1.0f), XMFLOAT2(0,0) },
+		{ XMFLOAT3(-1.0f,  0.5f, +0.0f), XMFLOAT3(+0.0f, +0.0f, -1.0f), XMFLOAT2(0,0) },
+		{ XMFLOAT3(-2.0f, -1.0f, +0.0f), XMFLOAT3(+0.0f, +0.0f, -1.0f), XMFLOAT2(0,0) },
+		{ XMFLOAT3(+1.0f, -1.0f, +0.0f), XMFLOAT3(+0.0f, +0.0f, -1.0f), XMFLOAT2(0,0) },
+		{ XMFLOAT3(+0.0f, -1.0f, +0.0f), XMFLOAT3(+0.0f, +0.0f, -1.0f), XMFLOAT2(0,0) },
+		{ XMFLOAT3(-1.0f, +2.0f, +0.0f), XMFLOAT3(+0.0f, +0.0f, -1.0f), XMFLOAT2(0,0) },
 	};
 
 	int indices_three[] = { 0, 1, 2, 1, 3, 4, 0, 5, 1, 5, 3, 1 };
@@ -330,7 +331,8 @@ void MyDemoGame::DrawScene(float deltaTime, float totalTime)
 		1.0f,
 		0);
 
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 3; i++)
+	{
 		entities[i]->Draw(deviceContext, debugCamera->ViewMat(), debugCamera->ProjectionMat());
 	}
 

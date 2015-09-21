@@ -89,6 +89,19 @@ MyDemoGame::~MyDemoGame()
 	for (int i = 0; i < entities.size(); i++) {
 		delete entities[i];
 	}
+	entities.clear();
+
+	for (int i = 0; i < meshes.size(); i++)
+	{
+		delete meshes[i];
+	}
+	meshes.clear();
+
+	for (int i = 0; i < materials.size(); i++)
+	{
+		delete materials[i];
+	}
+	materials.clear();
 
 	delete debugCamera;
 
@@ -102,6 +115,7 @@ MyDemoGame::~MyDemoGame()
 	// Delete our simple shaders
 	delete vertexShader;
 	delete pixelShader;
+
 }
 
 #pragma endregion
@@ -167,6 +181,8 @@ void MyDemoGame::CreateGeometry()
 	Mesh *meshOne = new Mesh(vertices, 3, indices, 3, device);
 	GameEntity *objOne = new GameEntity(meshOne, mat);
 	entities.push_back(objOne);
+	materials.push_back(mat);
+	meshes.push_back(meshOne);
 
 	Vertex vertices_two[] =
 	{
@@ -181,6 +197,7 @@ void MyDemoGame::CreateGeometry()
 	Mesh *meshTwo = new Mesh(vertices_two, 4, indices_two, 6, device);
 	GameEntity *objTwo = new GameEntity(meshTwo, mat);
 	entities.push_back(objTwo);
+	meshes.push_back(meshTwo);
 
 	Vertex vertices_three[] =
 	{
@@ -198,6 +215,7 @@ void MyDemoGame::CreateGeometry()
 	GameEntity *objThree = new GameEntity(meshThree, mat);
 	objThree->Move(XMVECTOR{ 0,0,-1 });
 	entities.push_back(objThree);
+	meshes.push_back(meshThree);
 
 #else
 	// Create the VERTEX BUFFER description -----------------------------------

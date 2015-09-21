@@ -16,8 +16,6 @@ GameEntity::GameEntity(Mesh *mesh, Material* mat)
 
 GameEntity::~GameEntity()
 {
-	delete mesh;
-	delete material;
 }
 
 XMFLOAT4X4 GameEntity::WorldMat()

@@ -44,6 +44,7 @@ private:
 	void CreateMatrices();
 
 private:
+
 	// Buffers to hold actual geometry data
 	ID3D11Buffer* vertexBuffer;
 	ID3D11Buffer* indexBuffer;
@@ -62,6 +63,8 @@ private:
 	POINT prevMousePos;
 
 	std::vector<GameEntity*> entities;
+	std::vector<Mesh*> meshes;
+	std::vector<Material*> materials;
 
 	Camera* debugCamera;
 };

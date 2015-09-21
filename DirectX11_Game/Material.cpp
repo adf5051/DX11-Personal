@@ -1,7 +1,5 @@
 #include "Material.h"
 
-
-
 Material::Material(SimplePixelShader* pixelShader, SimpleVertexShader* vertexShader)
 {
 	this->pixelShader = pixelShader;
@@ -11,8 +9,6 @@ Material::Material(SimplePixelShader* pixelShader, SimpleVertexShader* vertexSha
 
 Material::~Material()
 {
-	delete pixelShader;
-	delete vertexShader;
 }
 
 SimpleVertexShader* Material::GetVertexShader()
